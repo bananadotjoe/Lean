@@ -95,9 +95,17 @@ namespace QuantConnect.Algorithm.Framework.Alphas.Analysis
 
             _previousEvaluationTimeUtc = CurrentValues.TimeUtc;
 
-            var barSize = Time.Max(analysisPeriod.ToHigherResolutionEquivalent(false).ToTimeSpan(), Time.OneMinute);
-            var barCount = (int)(insight.Period.Ticks / barSize.Ticks);
-            AnalysisEndTimeUtc = Time.GetEndTimeForTradeBars(initialValues.ExchangeHours, insight.CloseTimeUtc, analysisPeriod.ToHigherResolutionEquivalent(false).ToTimeSpan(), barCount, false);
+            if (analysisPeriod == insight.Period)
+            {
+                AnalysisEndTimeUtc = insight.CloseTimeUtc;
+            }
+            else
+            {
+                var barSize = Time.Max(analysisPeriod.ToHigherResolutionEquivalent(false).ToTimeSpan(), Time.OneMinute);
+                var barCount = (int)(insight.Period.Ticks / barSize.Ticks);
+                AnalysisEndTimeUtc = Time.GetEndTimeForTradeBars(initialValues.ExchangeHours, insight.CloseTimeUtc, analysisPeriod.ToHigherResolutionEquivalent(false).ToTimeSpan(), barCount, false);
+            }
+
             _analysisPeriod = AnalysisEndTimeUtc - initialValues.TimeUtc;
         }
 

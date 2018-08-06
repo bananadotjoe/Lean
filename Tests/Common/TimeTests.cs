@@ -15,7 +15,6 @@
 
 using System;
 using System.Linq;
-using com.fxcm.messaging.util.web;
 using NodaTime;
 using NUnit.Framework;
 using QuantConnect.Securities;
